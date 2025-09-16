@@ -62,6 +62,7 @@ const LeafletMap = forwardRef<LeafletMapHandle, LeafletMapProps>(({
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersRef = useRef<L.Marker[]>([]);
+  const circlesRef = useRef<L.Circle[]>([]);
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
@@ -106,7 +107,8 @@ const LeafletMap = forwardRef<LeafletMapHandle, LeafletMapProps>(({
   useImperativeHandle(ref, () => ({
     zoomToSensor: (sensor: SensorData) => {
       if (mapInstanceRef.current) {
-        mapInstanceRef.current.setView([sensor.latitude, sensor.longitude], 15, { animate: true });
+        // 🔥 Increased zoom from 15 → 18
+        mapInstanceRef.current.setView([sensor.latitude, sensor.longitude], 18, { animate: true });
         
         // Find and open the marker's popup
         const marker = markersRef.current.find(m => {
@@ -125,11 +127,16 @@ const LeafletMap = forwardRef<LeafletMapHandle, LeafletMapProps>(({
     const map = mapInstanceRef.current;
     if (!map || !mapReady) return;
 
-    // Remove existing markers
+    // Remove existing markers and circles
     markersRef.current.forEach(marker => {
       if (map.hasLayer(marker)) map.removeLayer(marker);
     });
     markersRef.current = [];
+
+    circlesRef.current.forEach(circle => {
+      if (map.hasLayer(circle)) map.removeLayer(circle);
+    });
+    circlesRef.current = [];
 
     // Filter sensors to only include those with valid coordinates from API
     const validSensors = sensors.filter(sensor => 
@@ -176,6 +183,18 @@ const LeafletMap = forwardRef<LeafletMapHandle, LeafletMapProps>(({
 
       markersRef.current.push(marker);
 
+      // Add red zone circle for sensors with fire alerts
+      if (sensor.isFire) {
+        const circle = L.circle([sensor.latitude, sensor.longitude], {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.2,
+          radius: 500 // 500 meter radius around the sensor
+        }).addTo(map);
+        
+        circlesRef.current.push(circle);
+      }
+
       if (isSelected) {
         // Focus on selected sensor
         map.setView([sensor.latitude, sensor.longitude], 12, { animate: true });
@@ -185,8 +204,7 @@ const LeafletMap = forwardRef<LeafletMapHandle, LeafletMapProps>(({
 
     // If we have valid sensors, adjust the map view to show them
     if (validSensors.length > 0) {
-      // Create a bounds object that contains all markers
-      const group = L.featureGroup(markersRef.current);
+      const group = L.featureGroup([...markersRef.current, ...circlesRef.current]);
       map.fitBounds(group.getBounds().pad(0.1));
     }
 
@@ -212,6 +230,10 @@ const LeafletMap = forwardRef<LeafletMapHandle, LeafletMapProps>(({
             sensor.longitude !== 0
           ).length} sensors deployed
         </p>
+        <div className="flex items-center mt-1">
+          <div className="w-3 h-3 rounded-full bg-red-500 mr-1"></div>
+          <span className="text-xs">Fire Alert Zone</span>
+        </div>
       </div>
     </div>
   );

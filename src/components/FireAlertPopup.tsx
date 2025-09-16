@@ -83,7 +83,7 @@ const FireAlertPopup: React.FC<FireAlertPopupProps> = ({
                   View in Map
                 </Button>
                 <Button 
-                  onClick={() => onLiveMonitoring(alert.id)} // Add this back
+                  onClick={() => onLiveMonitoring(alert.deviceId)} // <<-- FIX: pass deviceId (not the DB _id)
                   size="sm"
                   className="flex-1 bg-forest-primary text-white hover:bg-forest-primary/90 text-xs"
                 >
