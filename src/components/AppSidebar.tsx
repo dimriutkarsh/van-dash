@@ -71,7 +71,7 @@ export function AppSidebar() {
     <div className="flex items-center gap-2">
       {/* Logo image */}
       <img 
-        src="/src/logo.jpg" 
+        src="https://github.com/dimriutkarsh/van-dash/blob/main/src/logo.jpg?raw=true" 
         alt="VanRakshak Logo" 
         className="w-8 h-8 rounded-lg object-cover" 
       />
