@@ -66,24 +66,33 @@ export function AppSidebar() {
       className={`${collapsed ? 'w-14' : 'w-60'} glass border-r border-forest-accent/30`}
       collapsible="icon"
     >
-      <SidebarHeader className="p-4 border-b border-forest-accent/30">
-        {!collapsed && (
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-forest-primary rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h2 className="font-bold text-forest-primary">VanRakshak</h2>
-              <p className="text-xs text-muted-foreground">Forest Department Dashboard</p>
-            </div>
-          </div>
-        )}
-        {collapsed && (
-          <div className="w-8 h-8 bg-forest-primary rounded-lg flex items-center justify-center mx-auto">
-            <Shield className="w-5 h-5 text-white" />
-          </div>
-        )}
-      </SidebarHeader>
+<SidebarHeader className="p-4 border-b border-forest-accent/30">
+  {!collapsed && (
+    <div className="flex items-center gap-2">
+      {/* Logo image */}
+      <img 
+        src="/logo.jpg" 
+        alt="VanRakshak Logo" 
+        className="w-8 h-8 rounded-lg object-cover" 
+      />
+
+      <div>
+        <h2 className="font-bold text-forest-primary">VanRakshak</h2>
+        <p className="text-xs text-muted-foreground">Forest Department Dashboard</p>
+      </div>
+    </div>
+  )}
+  {collapsed && (
+    <div className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto">
+      <img 
+        src="/logo.jpg" 
+        alt="VanRakshak Logo" 
+        className="w-8 h-8 rounded-lg object-cover" 
+      />
+    </div>
+  )}
+</SidebarHeader>
+
 
       <SidebarContent>
         <SidebarGroup>

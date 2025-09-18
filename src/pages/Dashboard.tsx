@@ -119,13 +119,15 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-forest-primary text-forest-primary hover:bg-forest-primary hover:text-white"
-          >
-            Main Site
-          </Button>
+<Button
+  variant="outline"
+  size="sm"
+  className="border-forest-primary text-forest-primary hover:bg-forest-primary hover:text-white"
+  onClick={() => window.location.href = "https://dimriutkarsh.github.io/Van-updated/"}
+>
+  Main Site
+</Button>
+
           <Button
             variant="outline"
             size="sm"
@@ -134,12 +136,15 @@ const Dashboard: React.FC = () => {
             Dashboard
           </Button>
           <Button
-            size="sm"
-            className="bg-forest-primary text-white hover:bg-forest-primary/90"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+  variant="outline"
+  size="sm"
+  className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+  onClick={() => window.location.href = "https://dimriutkarsh.github.io/Van-updated/login.html"}
+>
+  <LogOut className="w-4 h-4 mr-2" />
+  Logout
+</Button>
+
         </div>
       </header>
 
